@@ -4,9 +4,21 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-} from "@remix-run/react";
+  json,
+  useLoaderData,
+} from '@remix-run/react';
+
+export async function loader() {
+  return json({
+    ENV: {
+      LOG_LEVEL: process.env.LOG_LEVEL,
+    },
+  });
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const { ENV } = useLoaderData<typeof loader>();
+
   return (
     <html lang="en">
       <head>
@@ -18,6 +30,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body>
         {children}
         <ScrollRestoration />
+        <script
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{
+            __html: `window.ENV = ${JSON.stringify(ENV)};`,
+          }}
+        />
         <Scripts />
       </body>
     </html>
