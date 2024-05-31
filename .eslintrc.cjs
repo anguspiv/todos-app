@@ -81,12 +81,24 @@ module.exports = {
 
     // Node
     {
-      files: ['.eslintrc.cjs', 'vite.config.ts'],
+      files: ['.eslintrc.cjs', 'vite.config.ts', 'vitest.config.ts', 'test/**/*.{t,j}s{,x}'],
       env: {
         node: true,
       },
       rules: {
-        'import/no-extraneous-dependencies': "off",
+        'import/no-extraneous-dependencies': 'off',
+      },
+    },
+
+    // Tests
+    {
+      files: ['**/*.test.{t,j}s{,x}', '**/test/**/*.{t,j}s{,x}'],
+      env: {
+        jest: true,
+      },
+      plugins: ['vitest'],
+      rules: {
+        'import/no-extraneous-dependencies': 'off',
       },
     },
   ],
