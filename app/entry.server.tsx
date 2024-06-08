@@ -6,14 +6,56 @@
 
 import { PassThrough } from 'node:stream';
 
-import type { AppLoadContext, EntryContext } from '@remix-run/node';
+import type { EntryContext } from '@remix-run/node';
 import { createReadableStreamFromReadable } from '@remix-run/node';
 import { RemixServer } from '@remix-run/react';
 import { isbot } from 'isbot';
 import { renderToPipeableStream } from 'react-dom/server';
 import { logger } from '~/utils/logger';
 
+import { ApolloProvider, ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client/index';
+import { getDataFromTree } from '@apollo/client/react/ssr';
+import type { ReactElement } from 'react';
+
 const ABORT_DELAY = 5_000;
+
+async function getApolloClient(request: Request) {
+  const client = new ApolloClient({
+    ssrMode: true,
+    link: createHttpLink({
+      uri: process.env.GRAPHQL_URI || 'http://localhost:4000/graphql',
+      headers: {
+        ...Object.fromEntries(request.headers),
+      },
+    }),
+    credentials: request.credentials ?? 'include',
+    cache: new InMemoryCache(),
+  });
+
+  return client;
+}
+
+async function wrapRemixServerWithApollo(remixServer: ReactElement, request: Request) {
+  const client = await getApolloClient(request);
+
+  const app = <ApolloProvider client={client}>{remixServer}</ApolloProvider>;
+
+  await getDataFromTree(app);
+  const intialState = client.extract();
+
+  const appWithData = (
+    <>
+      {app}
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `window.__APOLLO_STATE__=${JSON.stringify(intialState).replace(/</g, '\\u003c')};`,
+        }}
+      />
+    </>
+  );
+
+  return appWithData;
+}
 
 function handleBotRequest(
   request: Request,
@@ -68,10 +110,15 @@ function handleBrowserRequest(
   responseHeaders: Headers,
   remixContext: EntryContext,
 ) {
-  return new Promise((resolve, reject) => {
+  // eslint-disable-next-line no-async-promise-executor
+  return new Promise(async (resolve, reject) => {
     let shellRendered = false;
+
     const { pipe, abort } = renderToPipeableStream(
-      <RemixServer context={remixContext} url={request.url} abortDelay={ABORT_DELAY} />,
+      await wrapRemixServerWithApollo(
+        <RemixServer context={remixContext} url={request.url} abortDelay={ABORT_DELAY} />,
+        request,
+      ),
       {
         onShellReady() {
           shellRendered = true;
@@ -114,10 +161,6 @@ export default function handleRequest(
   responseStatusCode: number,
   responseHeaders: Headers,
   remixContext: EntryContext,
-  // This is ignored so we can keep it in the template for visibility.  Feel
-  // free to delete this parameter in your app if you're not using it!
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  loadContext: AppLoadContext,
 ) {
   return isbot(request.headers.get('user-agent') || '')
     ? handleBotRequest(request, responseStatusCode, responseHeaders, remixContext)

@@ -12,12 +12,13 @@ export async function loader() {
   return json({
     ENV: {
       LOG_LEVEL: process.env.LOG_LEVEL,
+      GRAPHQL_URI: process.env.GRAPHQL_URI,
     },
   });
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const { ENV } = useLoaderData<typeof loader>();
+  const data = useLoaderData<typeof loader>();
 
   return (
     <html lang="en">
@@ -31,9 +32,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         {children}
         <ScrollRestoration />
         <script
-          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{
-            __html: `window.ENV = ${JSON.stringify(ENV)};`,
+            __html: `window.ENV = ${JSON.stringify(data?.ENV || {})};`,
           }}
         />
         <Scripts />

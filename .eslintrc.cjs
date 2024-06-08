@@ -27,6 +27,7 @@ module.exports = {
 
   rules: {
     'import/prefer-default-export': 'off',
+    'react/no-danger': 'off',
   },
 
   overrides: [
@@ -81,7 +82,13 @@ module.exports = {
 
     // Node
     {
-      files: ['.eslintrc.cjs', 'vite.config.ts', 'vitest.config.ts', 'test/**/*.{t,j}s{,x}'],
+      files: [
+        '.eslintrc.cjs',
+        'vite.config.ts',
+        'vitest.config.ts',
+        'test/**/*.{t,j}s{,x}',
+        'codegen.ts',
+      ],
       env: {
         node: true,
       },

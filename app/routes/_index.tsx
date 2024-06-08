@@ -1,4 +1,17 @@
 import type { MetaFunction } from '@remix-run/node';
+import { gql, useQuery } from '@apollo/client/index';
+import { Todo } from 'src/__generated__/graphql';
+
+export const GET_TODOS_QUERY = gql`
+  query FilterTodos {
+    filterTodos {
+      completed
+      description
+      id
+      createdAt
+    }
+  }
+`;
 
 export const meta: MetaFunction = () => [
   { title: 'New Remix App' },
@@ -6,26 +19,23 @@ export const meta: MetaFunction = () => [
 ];
 
 export default function Index() {
+  const { data, loading, error } = useQuery(GET_TODOS_QUERY);
+
   return (
     <div style={{ fontFamily: 'system-ui, sans-serif', lineHeight: '1.8' }}>
-      <h1>Welcome to Remix</h1>
-      <ul>
-        <li>
-          <a target="_blank" href="https://remix.run/tutorials/blog" rel="noreferrer">
-            15m Quickstart Blog Tutorial
-          </a>
-        </li>
-        <li>
-          <a target="_blank" href="https://remix.run/tutorials/jokes" rel="noreferrer">
-            Deep Dive Jokes App Tutorial
-          </a>
-        </li>
-        <li>
-          <a target="_blank" href="https://remix.run/docs" rel="noreferrer">
-            Remix Docs
-          </a>
-        </li>
-      </ul>
+      <h1>Remix + Apollo Todos</h1>
+      {loading && <p>Loading...</p>}
+      {error && <p>Error: {error.message}</p>}
+      {data && (
+        <ul>
+          {data.filterTodos.map((todo: Todo) => (
+            <li key={todo.id}>
+              <input type="checkbox" checked={todo.completed} readOnly />
+              <span style={{ marginLeft: 8 }}>{todo.description}</span>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
