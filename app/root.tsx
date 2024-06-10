@@ -8,6 +8,8 @@ import {
   useLoaderData,
 } from '@remix-run/react';
 
+import '~/styles/global.css';
+
 export async function loader() {
   return json({
     ENV: {
