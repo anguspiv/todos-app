@@ -28,6 +28,8 @@ module.exports = {
   rules: {
     'import/prefer-default-export': 'off',
     'react/no-danger': 'off',
+    'react/require-default-props': 'off',
+    'react/jsx-props-no-spreading': 'off',
   },
 
   overrides: [
@@ -86,6 +88,7 @@ module.exports = {
         '.eslintrc.cjs',
         'vite.config.ts',
         'vitest.config.ts',
+        'vite.base.config.ts',
         'test/**/*.{t,j}s{,x}',
         'codegen.ts',
       ],
@@ -106,6 +109,14 @@ module.exports = {
       plugins: ['vitest'],
       rules: {
         'import/no-extraneous-dependencies': 'off',
+      },
+    },
+    {
+      files: ['**/*.stories.{t,j}s{,x}', '**/stories/**/*.{t,j}s{,x}'],
+      extends: ['plugin:storybook/recommended'],
+      rules: {
+        'import/no-extraneous-dependencies': 'off',
+        'react/function-component-definition': 'off',
       },
     },
   ],
