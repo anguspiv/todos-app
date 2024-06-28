@@ -12,11 +12,13 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
+    actions: { argTypesRegex: '^on[A-Z].*' },
     docs: {
       toc: true,
     },
   },
   decorators: [withRouter, withPerformance],
+  tags: ['autodocs', 'remix', 'react-router', 'performance'],
 };
 
 export default preview;
