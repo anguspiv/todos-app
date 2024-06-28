@@ -16,12 +16,7 @@ globalStyle('html', {
 
 globalStyle('body', {
   margin: 0,
-  '@media': {
-    '(prefers-color-scheme: dark)': {
-      backgroundColor: vars.color.darkGray,
-      color: vars.color.white,
-    },
-  },
+  backgroundColor: vars.color.white,
 });
 
 globalStyle('abbr[title]', {
