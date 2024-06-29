@@ -6,12 +6,15 @@ globalStyle('*, ::before, ::after', {
 });
 
 globalStyle('html', {
-  fontFamily:
-    "system-ui, Segoe UI', Roboto, Helvetica, Arial, sans- serif, 'Apple Color Emoji', 'Segoe UI Emoji'",
   lineHeight: 1.5,
   WebkitTextSizeAdjust: '100%',
   MozTabSize: '4',
   tabSize: '4',
+  fontFamily: '"Open Sans", sans-serif',
+  fontOpticalSizing: 'auto',
+  fontWeight: '400',
+  fontStyle: 'normal',
+  fontVariationSettings: '"wdth" 100',
 });
 
 globalStyle('body', {
