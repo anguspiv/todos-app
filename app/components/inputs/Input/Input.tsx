@@ -8,16 +8,23 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   end?: ReactNode;
   status?: 'error' | 'success' | 'warning';
   disabled?: boolean;
+  readOnly?: boolean;
 }
 
 export const Input = forwardRef(
   (
-    { start, end, status, disabled, className, ...props }: InputProps,
+    { start, end, status, disabled, className, readOnly, ...props }: InputProps,
     ref: Ref<HTMLInputElement>,
   ) => (
-    <InputOutline status={status} disabled={disabled} className={className}>
+    <InputOutline status={status} disabled={disabled} className={className} readOnly={readOnly}>
       <div className={styles.start}>{start}</div>
-      <InputField {...props} className={styles.input} disabled={disabled} ref={ref} />
+      <InputField
+        {...props}
+        className={styles.input}
+        disabled={disabled}
+        ref={ref}
+        readOnly={readOnly}
+      />
       <div className={styles.end}>{end}</div>
     </InputOutline>
   ),

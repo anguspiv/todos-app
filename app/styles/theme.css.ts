@@ -1,23 +1,35 @@
-import { rem } from 'polished';
+import { rem, lighten, darken } from 'polished';
 import { createGlobalTheme } from '@vanilla-extract/css';
 
 export const color = {
   brand: '#4271a1',
+  brandDark: darken(0.2, '#4271a1'),
+  brandLight: lighten(0.2, '#4271a1'),
   black: '#212121',
+  grayDark: '#9f9f9f',
+  gray: '#777',
+  grayLight: '#dfdfdf',
   white: '#f9f8f9',
   green: '#66be81',
+  greenDark: darken(0.2, '#66be81'),
+  greenLight: lighten(0.2, '#66be81'),
   red: '#f55a4e',
+  redDark: darken(0.2, '#f55a4e'),
+  redLight: lighten(0.2, '#f55a4e'),
   orange: '#d6af4f',
-  blue: '#9abcbf',
-  darkBlue: '#375879',
+  orangeDark: darken(0.2, '#d6af4f'),
+  orangeLight: lighten(0.2, '#d6af4f'),
+  blue: '#375879',
+  blueDark: darken(0.2, '#375879'),
+  blueLight: lighten(0.2, '#375879'),
   purple: '#7acdc8',
-  darkGray: '#9f9f9f',
-  gray: '#777',
-  lightGray: '#dfdfdf',
+  purpleDark: darken(0.2, '#7acdc8'),
+  purpleLight: lighten(0.2, '#7acdc8'),
   error: '#f55a4e',
   warning: '#d6af4f',
   success: '#66be81',
-  info: '#9abcbf',
+  info: '#375879',
+  disabled: '#777',
 };
 
 export const fonts = {

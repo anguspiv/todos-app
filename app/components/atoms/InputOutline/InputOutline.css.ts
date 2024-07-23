@@ -2,27 +2,32 @@ import { style } from '@vanilla-extract/css';
 import { rem, lighten } from 'polished';
 import { vars, color } from '~/styles/theme.css';
 
+const focusedStyles = {
+  background: lighten(0.42, color.blueLight), // `radial-gradient(transparent, ${lighten(0.3, color.purple)})`,
+  borderColor: vars.color.blue,
+};
+
 export const outline = style({
   alignItems: 'center',
-  backgroundColor: 'transparent',
-  borderBottom: `${vars.border.small} solid ${vars.color.darkGray}`,
+  background: 'transparent',
+  borderBottom: `${vars.border.small} solid ${vars.color.grayDark}`,
   display: 'inline-grid',
+  padding: `${rem(4)} ${rem(4)}`,
   gridTemplateAreas: '"start input end"',
   gridTemplateColumns: 'auto 1fr auto',
   gridTemplateRows: '1fr',
   justifyContent: 'start',
   transitionTimingFunction: 'ease-in-out',
   transitionDuration: vars.transitions.fast,
-  transitionProperty: 'background-color, border-color',
-  height: rem(24),
+  transitionProperty: 'background, border-color',
+  height: rem(32),
   minWidth: rem(200),
   cursor: 'pointer',
   ':hover': {
-    borderColor: vars.color.darkBlue,
-  },
-  ':focus': {
     borderColor: vars.color.blue,
   },
+  ':focus': focusedStyles,
+  ':focus-within': focusedStyles,
 });
 
 export const success = style({
@@ -43,11 +48,20 @@ export const warning = style({
 });
 
 export const disabled = style({
-  backgroundColor: lighten(0.1, color.lightGray),
-  borderColor: vars.color.lightGray,
+  backgroundColor: lighten(0.1, color.grayLight),
+  borderColor: vars.color.disabled,
   color: vars.color.gray,
   cursor: 'not-allowed',
   ':hover': {
-    borderColor: vars.color.lightGray,
+    borderColor: vars.color.grayLight,
   },
 });
+
+export const readOnly = style({
+  borderColor: 'transparent',
+  ':hover': {
+    borderColor: 'transparent',
+  },
+});
+
+export const focused = style(focusedStyles);
