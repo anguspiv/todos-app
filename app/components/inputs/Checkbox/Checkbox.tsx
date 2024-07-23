@@ -13,13 +13,15 @@ import {
   CheckboxProps as CheckboxDivProps,
 } from '~/components/atoms/Checkbox';
 
-interface CheckboxProps extends AriaCheckboxProps {}
+export interface CheckboxProps extends AriaCheckboxProps {
+  className?: string;
+}
 
-export function Checkbox({ children, ...props }: CheckboxProps) {
+export function Checkbox({ children, className, ...props }: CheckboxProps) {
   const state = useToggleState(props);
   const ref = useRef(null);
   const { inputProps, labelProps } = useCheckbox(props, state, ref);
-  const { focusProps } = useFocusRing();
+  const { isFocusVisible, focusProps } = useFocusRing();
   const isSelected = state.isSelected && !props.isIndeterminate;
 
   let checked: CheckboxDivProps['checked'] = isSelected;
@@ -30,11 +32,11 @@ export function Checkbox({ children, ...props }: CheckboxProps) {
 
   return (
     // eslint-disable-next-line jsx-a11y/label-has-associated-control
-    <label {...labelProps}>
+    <label {...labelProps} className={className}>
       <VisuallyHidden>
         <input {...mergeProps(inputProps, focusProps)} ref={ref} />
       </VisuallyHidden>
-      <CheckboxDiv checked={checked} />
+      <CheckboxDiv checked={checked} focused={isFocusVisible} />
       {children}
     </label>
   );

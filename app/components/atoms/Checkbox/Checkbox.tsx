@@ -10,9 +10,18 @@ export type CheckboxProps = {
   checked?: boolean | 'checked' | 'indeterminate';
   disabled?: boolean;
   error?: boolean;
+  focused?: boolean;
 };
 
-export function Checkbox({ checked = false, disabled = false, error = false }: CheckboxProps) {
+export function Checkbox({
+  checked = false,
+  disabled = false,
+  error = false,
+  focused = false,
+}: CheckboxProps) {
+  const isChecked = checked === true || checked === STATUS_CHECKED;
+  const showIcon = isChecked || checked === STATUS_INDETERMINATE;
+
   return (
     <div
       className={clsx(styles.checkbox, {
@@ -20,15 +29,20 @@ export function Checkbox({ checked = false, disabled = false, error = false }: C
         [styles.checkboxDisabled]: disabled,
         [styles.checkboxError]: error,
         [styles.checkboxWarning]: checked === STATUS_INDETERMINATE,
+        [styles.checkboxFocused]: focused,
       })}
       data-testid="checkbox"
       data-disabled={disabled}
       data-error={error}
     >
-      {(checked === true || checked === STATUS_CHECKED) && (
-        <FontAwesomeIcon icon={faCheck} data-testid="checkmark" />
-      )}
-      {checked === STATUS_INDETERMINATE && <FontAwesomeIcon icon={faMinus} data-testid="dash" />}
+      <div className={styles.content}>
+        {showIcon && (
+          <FontAwesomeIcon
+            icon={isChecked ? faCheck : faMinus}
+            data-testid={isChecked ? 'checkmark' : 'dash'}
+          />
+        )}
+      </div>
     </div>
   );
 }

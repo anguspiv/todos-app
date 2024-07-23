@@ -2,24 +2,39 @@ import { style } from '@vanilla-extract/css';
 import { rem } from 'polished';
 import { vars } from '~/styles/theme.css';
 
+const focusedStyles = {
+  outline: 'none',
+  boxShadow: `0 0 10px ${vars.color.blue}`,
+};
+
 export const checkbox = style({
   backgroundColor: 'transparent',
-  border: `${vars.border.small} solid ${vars.color.darkGray}`,
+  border: `${vars.border.small} solid ${vars.color.grayDark}`,
   borderRadius: vars.radii.small,
-  display: 'inline-flex',
-  justifyContent: 'center',
-  alignItems: 'center',
+  display: 'block',
   transitionTimingFunction: 'ease-in-out',
   transitionDuration: vars.transitions.fast,
-  transitionProperty: 'background-color, border-color',
+  transitionProperty: 'background-color, border-color, box-shadow',
+  boxShadow: '0 0 0 transparent',
   width: rem(24),
   height: rem(24),
   cursor: 'pointer',
+  ':focus': focusedStyles,
+});
+
+export const content = style({
+  width: '100%',
+  height: '100%',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  overflow: 'hidden',
+  fontSize: rem(20),
 });
 
 export const checkboxChecked = style({
-  backgroundColor: vars.color.darkBlue,
-  borderColor: vars.color.darkBlue,
+  backgroundColor: vars.color.blue,
+  borderColor: vars.color.blue,
   color: vars.color.white,
 });
 
@@ -36,8 +51,10 @@ export const checkboxError = style({
 });
 
 export const checkboxDisabled = style({
-  backgroundColor: vars.color.lightGray,
-  borderColor: vars.color.lightGray,
+  backgroundColor: vars.color.grayLight,
+  borderColor: vars.color.grayLight,
   color: vars.color.gray,
   cursor: 'not-allowed',
 });
+
+export const checkboxFocused = style(focusedStyles);
