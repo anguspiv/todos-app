@@ -88,11 +88,3 @@ export const Warning: Story = {
     color: 'warning',
   },
 };
-
-export const Info: Story = {
-  args: {
-    icon: faAdd,
-    label: 'Add',
-    color: 'info',
-  },
-};

@@ -2,6 +2,8 @@ import { vitePlugin as remix } from '@remix-run/dev';
 import { defineConfig } from 'vite';
 import { baseConfig } from './vite.base.config';
 
+const basePlugins = baseConfig.plugins || [];
+
 export default defineConfig({
   ...baseConfig,
   plugins: [
@@ -12,6 +14,6 @@ export default defineConfig({
         v3_throwAbortReason: true,
       },
     }),
-    ...baseConfig.plugins,
+    ...basePlugins,
   ],
 });
