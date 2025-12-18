@@ -81,7 +81,7 @@
     "eslint-plugin-storybook": "^0.8.0",
     "eslint-plugin-vitest": "^0.5.4",
     "jsdom": "^24.1.0",
-    "storybook": "8.1.6",
+    "storybook": "8.6.15",
     "storybook-addon-performance": "^0.17.3",
     "tsc-files": "^1.1.4",
     "typescript": "^5.1.6",
